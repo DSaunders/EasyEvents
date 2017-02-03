@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventDb.Core", "EventDb.Core\EventDb.Core.csproj", "{0F538F7F-FD0C-4169-AB9F-026940AE36B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventDb.Core.Tests", "EventDb.Core.Tests\EventDb.Core.Tests.csproj", "{7541BB88-72C6-4808-9961-EABF78F0BA03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventDb.SampleWebApp", "EventDb.SampleWebApp\EventDb.SampleWebApp.csproj", "{82DC24B4-05FE-45B1-BB2C-919938DE294E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F538F7F-FD0C-4169-AB9F-026940AE36B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F538F7F-FD0C-4169-AB9F-026940AE36B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F538F7F-FD0C-4169-AB9F-026940AE36B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F538F7F-FD0C-4169-AB9F-026940AE36B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7541BB88-72C6-4808-9961-EABF78F0BA03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7541BB88-72C6-4808-9961-EABF78F0BA03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7541BB88-72C6-4808-9961-EABF78F0BA03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7541BB88-72C6-4808-9961-EABF78F0BA03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82DC24B4-05FE-45B1-BB2C-919938DE294E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DC24B4-05FE-45B1-BB2C-919938DE294E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DC24B4-05FE-45B1-BB2C-919938DE294E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DC24B4-05FE-45B1-BB2C-919938DE294E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
