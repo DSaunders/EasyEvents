@@ -10,6 +10,8 @@
 
     public class EventDb : IEventDb
     {
+        public bool IsReplayingEvents { get; set; }
+
         private static EventDbConfiguration _config;
         
         private readonly Processors _processors;
@@ -29,6 +31,9 @@
 
         public async Task RaiseEventAsync(IEvent @event)
         {
+            if (IsReplayingEvents)
+                return;
+
             await _config.EventStore.RaiseEventAsync(@event).ConfigureAwait(false);
             
             foreach (var processor in _processors.GetProcessorsForStream(@event.Stream))
@@ -36,9 +41,11 @@
 
         }
 
-        public async Task ReplayAllEvents()
+        public async Task ReplayAllEventsAsync()
         {
+            IsReplayingEvents = true;
             await _config.EventStore.ReplayAllEvents().ConfigureAwait(false);
+            IsReplayingEvents = false;
         }
 
         public void AddProcessorForStream(string streamName, Func<Dictionary<string, object>, object, Task> processor)

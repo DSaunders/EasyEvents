@@ -22,7 +22,7 @@
             _simpleTextEventHandler = new SimpleTextEventHandler(_eventList);
 
             _eventDb = new EventDb();
-                
+
             _eventDb.Configure(new EventDbConfiguration
             {
                 HandlerFactory = type => _simpleTextEventHandler,
@@ -54,7 +54,7 @@
             _eventList.Clear();
 
             // When
-            _eventDb.ReplayAllEvents();
+            _eventDb.ReplayAllEventsAsync();
 
             // Then
             _eventList[0].SomeTestValue.ShouldBe("event 1");
@@ -73,7 +73,8 @@
             });
 
             // When
-            var ex = await Record.ExceptionAsync(() => _eventDb.RaiseEventAsync(new SimpleTextEvent("this should explode")));
+            var ex =
+                await Record.ExceptionAsync(() => _eventDb.RaiseEventAsync(new SimpleTextEvent("this should explode")));
 
             // Then
             ex.ShouldNotBeNull();
@@ -93,7 +94,8 @@
             });
 
             // When
-            var ex = await Record.ExceptionAsync(() => _eventDb.RaiseEventAsync(new SimpleTextEvent("this should explode")));
+            var ex =
+                await Record.ExceptionAsync(() => _eventDb.RaiseEventAsync(new SimpleTextEvent("this should explode")));
 
             // Then
             ex.ShouldNotBeNull();
@@ -112,7 +114,7 @@
 
                 if (typedEvent != null && typedEvent.SomeTestValue == "First event")
                     await _eventDb.RaiseEventAsync(new SimpleTextEvent(typedEvent.SomeTestValue + " re-raised"));
-                
+
             });
 
             // When
@@ -148,8 +150,8 @@
                 s["count"] = s.ContainsKey("count")
                     ? (int) s["count"] + 1
                     : 1;
-                  
-                if ((int)s["count"] == 3)
+
+                if ((int) s["count"] == 3)
                     await _eventDb.RaiseEventAsync(new SimpleTextEvent("Third event fired"));
             });
 
@@ -166,6 +168,56 @@
             _eventList[2].SomeTestValue.ShouldBe("Event 3");
             _eventList[3].SomeTestValue.ShouldBe("Third event fired");
             _eventList[4].SomeTestValue.ShouldBe("Event 4");
+        }
+
+        [Fact]
+        public void Handlers_Raise_Events_During_Normal_Operation()
+        {
+            // Given
+            var store = new TestEventStore();
+            _eventDb.Configure(new EventDbConfiguration
+            {
+                EventStore = store,
+                HandlerFactory = type =>
+                {
+                    if (type == typeof(IEventHandler<RaisesAnotherEvent>))
+                        return new RaisesAnotherEventHandler(_eventDb);
+                    return new NullEventHandler();
+                }
+            });
+
+            // When
+            _eventDb.RaiseEventAsync(new RaisesAnotherEvent()).Wait();
+
+            // Then
+            store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
+            store.Events[1].ShouldBeOfType<NullEvent>();
+        }
+
+        [Fact]
+        public void Does_Not_Raise_Events_Again_When_Replaying_Events()
+        {
+            // Given
+            var store = new TestEventStore();
+            _eventDb.Configure(new EventDbConfiguration
+            {
+                EventStore = store,
+                HandlerFactory = type =>
+                {
+                    if (type == typeof(IEventHandler<RaisesAnotherEvent>))
+                        return new RaisesAnotherEventHandler(_eventDb);
+                    return new NullEventHandler();
+                }
+            });
+            _eventDb.RaiseEventAsync(new RaisesAnotherEvent()).Wait();
+            
+            // When
+            _eventDb.ReplayAllEventsAsync().Wait();
+
+            // Then
+            store.Events.Count.ShouldBe(2);
+            store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
+            store.Events[1].ShouldBeOfType<NullEvent>();
         }
     }
 }

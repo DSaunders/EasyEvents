@@ -10,7 +10,7 @@
     {
         void Configure(EventDbConfiguration config);
         Task RaiseEventAsync(IEvent @event);
-        Task ReplayAllEvents();
+        Task ReplayAllEventsAsync();
         void AddProcessorForStream(string streamName, Func<Dictionary<string,object>, object, Task> processor);
     }
 }

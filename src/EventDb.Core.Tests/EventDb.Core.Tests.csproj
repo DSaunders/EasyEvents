@@ -62,8 +62,11 @@
   <ItemGroup>
     <Compile Include="EventPublishingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestEventStore.cs" />
     <Compile Include="TestEvents\NullEvent.cs" />
     <Compile Include="TestEvents\NullEventHandler.cs" />
+    <Compile Include="TestEvents\RaisesAnotherEvent.cs" />
+    <Compile Include="TestEvents\RaisesAnotherEventHandler.cs" />
     <Compile Include="TestEvents\SimpleTextEvent.cs" />
     <Compile Include="TestEvents\SimpleTextEventHandler.cs" />
   </ItemGroup>

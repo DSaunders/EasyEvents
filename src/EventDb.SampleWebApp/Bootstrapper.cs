@@ -34,7 +34,7 @@
                 }
             });
 
-            eventDb.ReplayAllEvents().Wait();
+            eventDb.ReplayAllEventsAsync().Wait();
             eventDb.RaiseEventAsync(new AppStartedEvent()).Wait();
         }
     }
