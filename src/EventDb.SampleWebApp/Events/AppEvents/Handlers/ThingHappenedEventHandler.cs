@@ -5,7 +5,7 @@
 
     internal class ThingHappenedEventHandler : IEventHandler<ThingHappenedEvent>
     {
-        public async Task HandleEvent(ThingHappenedEvent @event)
+        public async Task HandleEventAsync(ThingHappenedEvent @event)
         {
             Logger.LogMessage("Thing happened: " + @event.TheThing);
         }

@@ -66,7 +66,7 @@
                                     $"Handler returned from Factory does not implement {nameof(IEventHandler<IEvent>)}<{eventTypeName}>");
             }
 
-            var method = targetHandlerType.GetMethod(nameof(IEventHandler<IEvent>.HandleEvent));
+            var method = targetHandlerType.GetMethod(nameof(IEventHandler<IEvent>.HandleEventAsync));
             return (Task)method.Invoke(handler, new []{@event});
         }
 

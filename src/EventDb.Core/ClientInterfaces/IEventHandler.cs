@@ -4,6 +4,6 @@
 
     public interface IEventHandler<TEventType> where TEventType : IEvent
     {
-        Task HandleEvent(TEventType @event);
+        Task HandleEventAsync(TEventType @event);
     }
 }

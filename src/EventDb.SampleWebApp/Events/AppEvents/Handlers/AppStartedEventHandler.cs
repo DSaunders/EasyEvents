@@ -5,7 +5,7 @@
 
     internal class AppStartedEventHandler : IEventHandler<AppStartedEvent>
     {
-        public async Task HandleEvent(AppStartedEvent @event)
+        public async Task HandleEventAsync(AppStartedEvent @event)
         {
             Logger.LogMessage("App Started");
         }

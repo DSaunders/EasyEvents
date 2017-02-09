@@ -13,7 +13,7 @@ namespace EventDb.Core.Tests.TestEvents
             _eventList = eventList;
         }
 
-        public async Task HandleEvent(SimpleTextEvent @event)
+        public async Task HandleEventAsync(SimpleTextEvent @event)
         {
             _eventList.Add(@event);
         }

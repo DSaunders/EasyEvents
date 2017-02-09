@@ -5,7 +5,7 @@ namespace EventDb.Core.Tests.TestEvents
 
     public class NullEventHandler : IEventHandler<NullEvent>
     {
-        public async Task HandleEvent(NullEvent @event)
+        public async Task HandleEventAsync(NullEvent @event)
         {
         }
     }

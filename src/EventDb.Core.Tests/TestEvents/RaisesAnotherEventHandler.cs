@@ -12,7 +12,7 @@
             _eventDb = eventDb;
         }
 
-        public async Task HandleEvent(RaisesAnotherEvent @event)
+        public async Task HandleEventAsync(RaisesAnotherEvent @event)
         {
             await _eventDb.RaiseEventAsync(new NullEvent());
         }
