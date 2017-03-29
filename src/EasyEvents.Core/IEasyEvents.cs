@@ -12,5 +12,6 @@
         Task RaiseEventAsync(IEvent @event);
         Task ReplayAllEventsAsync();
         void AddProcessorForStream(string streamName, Func<Dictionary<string,object>, object, Task> processor);
+        bool IsReplayingEvents { get; }
     }
 }

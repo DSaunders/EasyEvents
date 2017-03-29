@@ -10,7 +10,7 @@
 
     public class EasyEvents : IEasyEvents
     {
-        public bool IsReplayingEvents { get; set; }
+        public bool IsReplayingEvents { get; private set; }
 
         private static EasyEventsConfiguration _config;
         
