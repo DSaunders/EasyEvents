@@ -13,7 +13,7 @@ EasyEvents makes is easy to persist events - not state.
 
 ## Strongly typed
 
-Strongly typed events.
+#### Events
 
 ```csharp
 public class UserCreated : IEvent
@@ -28,6 +28,8 @@ public class UserCreated : IEvent
 ```
 
 The `stream` property is used to logically segregate your events. For example, you might have a stream for user account events (password changed, logged in), another for shopping cart events (item added, item removed) etc.
+
+#### Event Handlers
 
 Event handlers subscribe to and process a single event, encouraging terse code that follows the single responsibility principle. 
 
