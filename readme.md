@@ -118,7 +118,7 @@ NB: Another pattern to avoid duplicating commands like sending emails, is to hav
 
 ## General guidlines
 
-## Immutable events
+### Immutable events
 Your events should be immutable and represent the past-tense (e.g. UserCreated).
 Once and event is raised, it is saved immediately. Changing the properties of that object will cause issues when re-playing events, as we can't keep track of those changes.
 
@@ -126,7 +126,7 @@ TODO
 - aggregates same stream base class
 - replay events on start
 
-### Currently working on:
+## Currently working on:
 - SQL storage - Option to use a table per stream
 - EventStore storage
 - File storage
