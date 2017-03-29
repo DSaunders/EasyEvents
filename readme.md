@@ -60,7 +60,7 @@ events.AddProcessorForStream("subscriptions", async (context, event) =>
         await events.RaiseEventAsync(new HaveAParty());
     }
     
-    // We also have access to the steam 'context' here, which is a simple Dictionary<string,object> we 
+    // We also have access to the stream's 'context' here, which is a simple Dictionary<string,object> we 
     //  can use to store state between these subscriptions. For example, we could count the number of 
     //  UserCreated events before a UserDeleted event
 });
