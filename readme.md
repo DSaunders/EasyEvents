@@ -6,10 +6,10 @@
 - Async everywhere
 - Multiple event storage options (even SQL Server, because why wouldn't you want to store all your events in SQL Server!?)
 
-Persist events, not state. 
-
 Raise events, then create handlers that respond to the events and modify state _in memory_. 
 When your application re-starts, replay all of the events to restore your state with one line of code.
+
+EasyEvents makes is easy to persist events - not state. 
 
 ## Strongly typed
 
