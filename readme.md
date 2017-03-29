@@ -1,6 +1,6 @@
 # EasyEvents
 
-Making Event Sourcing easy
+#### Making Event Sourcing easy for small applications
 
 - Strongly typed events
 - Async everywhere
