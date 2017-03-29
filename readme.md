@@ -4,7 +4,7 @@
 
 - Strongly typed events
 - Async everywhere
-- Multiple event storage options (even SQL, because why wouldn't you want to store all your events in a SQL server!?)
+- Multiple event storage options (even SQL Server, because why wouldn't you want to store all your events in SQL Server!?)
 
 Persist events, not state. 
 
