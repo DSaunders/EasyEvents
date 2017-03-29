@@ -27,7 +27,7 @@ public class UserCreated : IEvent
 Raise the event:
 
 ```csharp
-await eventDb.RaiseEventAsync(new UserCreated("Bob"));
+await easyEvents.RaiseEventAsync(new UserCreated("Bob"));
 ```
 
 Handle the event:
@@ -46,7 +46,7 @@ public class UserCreatedHandler : IEventHandler<UserCreated>
 When your application restarts, replay all events to recreate your state:
 
 ```csharp
-await eventDb.ReplayAllEventsAsync();
+await easyEvents.ReplayAllEventsAsync();
 ```
 
 Add listeners to your streams that re-raise events, project data out into a read model etc..
@@ -72,7 +72,7 @@ Configuring EasyEvents is, well.. easy!
 Incude something like this in your applications startup/bootsrapper class:
 
 ```csharp
-eventDb.Configure(new EventDbConfiguration
+easyEvents.Configure(new EasyEventsConfiguration
 {
     EventStore = new SqlEventStore("server=.;database=test;"),
     HandlerFactory = type => { return container.Resolve(type); }
@@ -116,8 +116,12 @@ If you wish to hook into this mechanism to avoid repeating sections of your own 
 NB: Another pattern to avoid duplicating commands like sending emails, is to have your event handler populate a queue. When the email is sent, another event removes the email from the queue. Once the app is started and all events are replayed, process the queue and send only the emails that are still in the queue. 
 
 ## General guidlines
+
+## Immutable events
+Your events should be immutable and represent the past-tense (e.g. UserCreated).
+Once and event is raised, it is saved immediately. Changing the properties of that object will cause issues when re-playing events, as we can't keep track of those changes.
+
 TODO
-- events immutable
 - aggregates same stream base class
 - replay events on start
 
