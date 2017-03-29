@@ -5,12 +5,12 @@
 
     public class EasyEventsConfiguration
     {
-        public IStore EventStore { get; set; }
+        public IStore Store { get; set; }
         public Func<Type, object> HandlerFactory { get; set; }
 
         public EasyEventsConfiguration()
         {
-            EventStore = new InMemoryEventStore();
+            Store = new InMemoryEventStore();
         }
     }
 }

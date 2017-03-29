@@ -21,7 +21,7 @@
 
             events.Configure(new EasyEventsConfiguration
             {
-                EventStore = new SqlEventStore("server=.;database=test;Integrated Security=true;"),
+                Store = new SqlEventStore("server=.;database=test;Integrated Security=true;"),
                 HandlerFactory = type => container.Resolve(type)
             });
 

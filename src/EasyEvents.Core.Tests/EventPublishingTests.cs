@@ -26,7 +26,7 @@
             _easyEvents.Configure(new EasyEventsConfiguration
             {
                 HandlerFactory = type => _simpleTextEventHandler,
-                EventStore = new InMemoryEventStore()
+                Store = new InMemoryEventStore()
             });
         }
 
@@ -69,7 +69,7 @@
             _easyEvents.Configure(new EasyEventsConfiguration
             {
                 HandlerFactory = type => new object(),
-                EventStore = new InMemoryEventStore()
+                Store = new InMemoryEventStore()
             });
 
             // When
@@ -90,7 +90,7 @@
             _easyEvents.Configure(new EasyEventsConfiguration
             {
                 HandlerFactory = type => new NullEventHandler(),
-                EventStore = new InMemoryEventStore()
+                Store = new InMemoryEventStore()
             });
 
             // When
@@ -177,7 +177,7 @@
             var store = new TestEventStore();
             _easyEvents.Configure(new EasyEventsConfiguration
             {
-                EventStore = store,
+                Store = store,
                 HandlerFactory = type =>
                 {
                     if (type == typeof(IEventHandler<RaisesAnotherEvent>))
@@ -201,7 +201,7 @@
             var store = new TestEventStore();
             _easyEvents.Configure(new EasyEventsConfiguration
             {
-                EventStore = store,
+                Store = store,
                 HandlerFactory = type =>
                 {
                     if (type == typeof(IEventHandler<RaisesAnotherEvent>))

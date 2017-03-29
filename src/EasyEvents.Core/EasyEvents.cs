@@ -26,7 +26,7 @@
         public void Configure(EasyEventsConfiguration config)
         {
             _config = config;
-            config.EventStore.EventHandler += DispatchEvent;
+            config.Store.EventHandler += DispatchEvent;
         }
 
         public async Task RaiseEventAsync(IEvent @event)
@@ -34,7 +34,7 @@
             if (IsReplayingEvents)
                 return;
 
-            await _config.EventStore.RaiseEventAsync(@event).ConfigureAwait(false);
+            await _config.Store.RaiseEventAsync(@event).ConfigureAwait(false);
             
             foreach (var processor in _processors.GetProcessorsForStream(@event.Stream))
                     await processor.Invoke(_streamState.GetStreamState(@event.Stream), @event).ConfigureAwait(false);
@@ -44,7 +44,7 @@
         public async Task ReplayAllEventsAsync()
         {
             IsReplayingEvents = true;
-            await _config.EventStore.ReplayAllEvents().ConfigureAwait(false);
+            await _config.Store.ReplayAllEvents().ConfigureAwait(false);
             IsReplayingEvents = false;
         }
 
