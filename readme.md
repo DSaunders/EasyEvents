@@ -74,7 +74,7 @@ easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
 });
 ```
 
-We also have access to the the streams 'contex't here. This is a `Dictionary<string,object>` that can be used to store anything you like between events. This example uses the stream context to track the number of users, raising a new event every 10 users:
+We also have access to the the streams 'context' here. This is a `Dictionary<string,object>` that can be used to store anything you like between events. This example uses the stream context to track the number of users, raising a new event every 10 users:
 
 ```csharp
 easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
@@ -131,8 +131,8 @@ If your IoC container auto-registers everything, you're probably fine.
 
 If not, here a quick summary:
 
-- `IEasyEvents` should be a singleton, and resolve to `EasyEvents'. This is how you'll raise events.
-- Register all `IEventHandler<T>`s. For example `IEventHandler<CustomerCreated>` might resolve to `CustomerCreatedHandler`
+- `IEasyEvents` should be a singleton, and resolve to `EasyEvents`. This is how you'll raise events.
+- Register all `IEventHandler<T>`s. For example `IEventHandler<CustomerCreated>` might resolve to your `CustomerCreatedHandler` class
 
 ## Available stores
 
