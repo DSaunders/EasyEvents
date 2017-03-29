@@ -187,11 +187,24 @@ NB: Another pattern to avoid duplicating commands like sending emails, is to hav
 Your events should be immutable and represent the past-tense (e.g. UserCreated).
 Once and event is raised, it is saved immediately. Changing the properties of that object will cause issues when re-playing events, as we can't keep track of those changes.
 
-TODO
-- aggregates same stream base class
-- replay events on start
+### Streams
+It's logical to use the 'aggregate roots' in your application as your event streams. For example, you might have a 'Users' stream, that contains all user related events.
+
+A neat way to do this in EasyEvents is to have a base class `IEvent` for each aggregate root, this will contain the stream name. Then, just derive each event from the base class, ensuring they always remain on the same stream.
+
+```csharp
+abstract class ApplicationEvents : IEvent
+{
+    public string Stream => "AppEvents";
+}
+
+class AppStartedEvent : ApplicationEvents
+{
+}
+```
 
 ## Currently working on:
 - SQL storage - Option to use a table per stream
 - EventStore storage
 - File storage
+- Querying a stream's history using Linq
