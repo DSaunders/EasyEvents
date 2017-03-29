@@ -6,12 +6,14 @@ Making Event Sourcing easy
 - Async everywhere
 - Multiple event storage options (even SQL, because why wouldn't you want to store all your events in a SQL server!?)
 
-EasyEvent encourages you to persist events, not state. Raise events, then create handlers that respond to the events and modify state _in memory_. 
+Persist events, not state. 
+
+Raise events, then create handlers that respond to the events and modify state _in memory_. 
 When your application re-starts, replay all of the events to restore your state with one line of code.
 
-## Show me some code ..
+## Strongly typed
 
-Create an event:
+Strongly typed events.
 
 ```csharp
 public class UserCreated : IEvent
@@ -25,13 +27,9 @@ public class UserCreated : IEvent
 }
 ```
 
-Raise the event:
+The `stream` property is used to logically segregate your events. For example, you might have a stream for user account events (password changed, logged in), another for shopping cart events (item added, item removed) etc.
 
-```csharp
-await easyEvents.RaiseEventAsync(new UserCreated("Bob"));
-```
-
-Handle the event:
+Event handlers subscribe to and process a single event, encouraging terse code that follows the single responsibility principle. 
 
 ```csharp
 public class UserCreatedHandler : IEventHandler<UserCreated>
@@ -44,25 +42,60 @@ public class UserCreatedHandler : IEventHandler<UserCreated>
 }
 ```
 
-When your application restarts, replay all events to recreate your state:
+As a general rule, application state should be kept in memory. State is then mutated only by your event handlers responding to an event, and will be recreated by replaying the same events whenever your application starts.
+
+## Raising events
+
+Raise events with one line:
+
+```csharp
+await easyEvents.RaiseEventAsync(new UserCreated("Bob"));
+```
+
+When your application starts, replay _all_ events to recreate your state:
 
 ```csharp
 await easyEvents.ReplayAllEventsAsync();
 ```
 
-Add listeners to your streams that re-raise events, project data out into a read model etc..
+## Processors
+
+Add processors to your streams that run for each event put on a stream.
+
+Use processors to raise new events, project data out into a read model used for reporting, or just to write to a log.
 
 ```csharp
-events.AddProcessorForStream("subscriptions", async (context, event) =>
+easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
 {
-    if (event is UserCreated)
+    if (evt is UserCreated)
     {
         await events.RaiseEventAsync(new HaveAParty());
     }
+});
+```
+
+We also have access to the the streams 'contex't here. This is a `Dictionary<string,object>` that can be used to store anything you like between events. This example uses the stream context to track the number of users, raising a new event every 10 users:
+
+```csharp
+easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
+{
+    if (!(evt is UserCreated))
+        return;
+        
+    // Get number of users from context
+    var numberOfUsers = context.ContainsKey("numberOfUsers")
+        ? (int) context["numberOfUsers"]
+        : 0;
+
+    // Increment the number of users
+    numberOfUsers++;
     
-    // We also have access to the stream's 'context' here, which is a simple Dictionary<string,object> we 
-    //  can use to store state between these subscriptions. For example, we could count the number of 
-    //  UserCreated events before a UserDeleted event
+    // Number of users is a multiple of 10
+    if (numberOfUsers % 10 == 0)
+        await events.RaiseEventAsync(new EveryTenUsersEvent());
+        
+    // Update context for the next event    
+    context["numberOfUsers"] = numberOfUsers;
 });
 ```
 
@@ -100,6 +133,38 @@ If not, here a quick summary:
 
 - `IEasyEvents` should be a singleton, and resolve to `EasyEvents'. This is how you'll raise events.
 - Register all `IEventHandler<T>`s. For example `IEventHandler<CustomerCreated>` might resolve to `CustomerCreatedHandler`
+
+## Available stores
+
+### SQL Server
+
+Currently stores all events in a single table, but will soon seperate them by stream. 
+
+The database must exist, but the tables will be created for you if they do not exist.
+
+The only parameter to the `SqlEventStore` constructor is the connection string for the database where you wish to store your events.
+
+```csharp
+easyEvents.Configure(new EasyEventsConfiguration
+{
+    EventStore = new SqlEventStore("server=.;database=test;")
+});
+```
+
+Internally, the `SqlEventStore` uses all Async methods when writing to the database. 
+
+### In Memory
+
+As you would guess, stores events in memory only.
+
+You'll only use this for unit testing, and perhaps when testing your application locally.
+
+```csharp
+easyEvents.Configure(new EasyEventsConfiguration
+{
+    EventStore = new InMemoryEventStore()
+});
+```
 
 
 ## Replaying events
