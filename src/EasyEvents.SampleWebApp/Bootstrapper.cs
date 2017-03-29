@@ -27,7 +27,7 @@
 
             events.AddProcessorForStream(new AppEvent().Stream, async (c, e) =>
             {
-                if (e.GetType() == typeof(ThingHappenedEvent) &&
+                if (e is ThingHappenedEvent &&
                     ((ThingHappenedEvent)e).TheThing == "broke")
                 {
                     await events.RaiseEventAsync(new ThingHappenedEvent("Ooooh noooo!!"));
