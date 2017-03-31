@@ -208,3 +208,4 @@ class AppStartedEvent : ApplicationEvents
 - EventStore storage
 - File storage
 - Querying a stream's history using Linq
+- Option to hold certain streams in memory for faster querying (probably required for the above)
