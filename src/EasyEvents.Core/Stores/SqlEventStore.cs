@@ -45,6 +45,11 @@
             using (var conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
+
+                // We're going to have to get all tables here, or create one table that 
+                // hold a list of the stream tables 
+                // As for how to get them, either union them (slow?) or get them all into memory and sort there?
+
                 await EnsureStreamTableExists(conn).ConfigureAwait(false);
 
                 var command = new SqlCommand("Select * from events order by created asc", conn);
@@ -76,7 +81,7 @@
             return null;
         }
         
-        private async Task EnsureStreamTableExists(SqlConnection conn)
+        private async Task EnsureStreamTableExists(SqlConnection conn, string tableNames)
         {
             if (_tableExists)
                 return;
