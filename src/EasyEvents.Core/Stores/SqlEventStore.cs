@@ -12,7 +12,7 @@
         private bool _tableExists;
 
         public Func<IEvent, Task> EventHandler { get; set; }
-        
+
         public SqlEventStore(string connectionString)
         {
             _connectionString = connectionString;
@@ -30,7 +30,10 @@
                     conn);
 
                 command.Parameters.AddWithValue("@0", @event.Stream);
-                command.Parameters.AddWithValue("@1", @event.GetType().FullName);
+                // TODO: Is there a less coupled way to store/load the Type name with .NET Core?
+                // We used to be able to do AppDomain.CurrentDomain.GetAssemblies() and iterate the
+                // assemblies to find the type by it's FullName, but that doesn't exist now.
+                command.Parameters.AddWithValue("@1", @event.GetType().AssemblyQualifiedName);
                 command.Parameters.AddWithValue("@2", JsonConvert.SerializeObject(@event));
                 command.Parameters.AddWithValue("@3", DateTime.UtcNow);
 
@@ -66,16 +69,9 @@
 
         private Type GetEventType(string eventName)
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var eventType = assembly.GetType(eventName);
-                if (eventType != null)
-                    return eventType;
-            }
-
-            return null;
+            return Type.GetType(eventName);
         }
-        
+
         private async Task EnsureStreamTableExists(SqlConnection conn)
         {
             if (_tableExists)

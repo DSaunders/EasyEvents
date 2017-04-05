@@ -1,7 +1,8 @@
-# EasyEvents
+# EasyEvents [![NuGet Version](https://img.shields.io/nuget/v/EasyEvents.Core.svg?style=flat)](https://www.nuget.org/packages/EasyEvents.Core/)
 
 #### Making Event Sourcing easy for small applications
 
+- .NET Core
 - Strongly typed events
 - Async everywhere
 - Multiple event storage options (even SQL Server, because why wouldn't you want to store all your events in SQL Server!?)
@@ -10,6 +11,14 @@ Raise events, then create handlers that respond to the events and modify state _
 When your application re-starts, replay all of the events to restore your state with one line of code.
 
 EasyEvents makes is easy to persist events - not state. 
+
+## Installation
+
+Install via NuGet:
+
+```
+PM > Install-Package EasyEvents.Core
+```
 
 ## Events
 
@@ -113,7 +122,7 @@ easyEvents.Configure(new EasyEventsConfiguration
 });
 ```
 
-Here are the setting you'll need:
+Here are the settings you'll need:
 
 ### Store
 
@@ -121,7 +130,7 @@ Tells EasyEvents where to store the event streams. See the 'Available Stores' se
 
 ### HandlerFactory
 
-This is a function that tells EasyEvents how to create handlers. We'll pass you a `Type` (that will be an `IEventHandler<>`), and you return the implementation.
+This is a function that tells EasyEvents how to create handlers. We'll pass you a `Type` (that will be an `IEventHandler<IEvent>`), and you return the implementation.
 
 This allows you to use your own container, just hook up the resolve method here.
 

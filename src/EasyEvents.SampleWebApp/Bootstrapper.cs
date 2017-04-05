@@ -14,6 +14,7 @@
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            container.Register<IEasyEvents, EasyEvents>().AsSingleton();
             container.Register<IEventHandler<AppStartedEvent>, AppStartedEventHandler>();
             container.Register<IEventHandler<ThingHappenedEvent>, ThingHappenedEventHandler>();
 

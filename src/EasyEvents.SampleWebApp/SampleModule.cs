@@ -1,6 +1,7 @@
 ﻿namespace EasyEvents.SampleWebApp
 {
     using System.Text;
+    using System.Threading.Tasks;
     using Core;
     using Events.AppEvents;
     using Nancy;
@@ -9,24 +10,24 @@
     {
         public SampleModule(IEasyEvents easyEvents)
         {
-            Get["/"] = _ => "Hello";
+            Get("/", x => Task.FromResult("Hello"));
 
-            Get["/thing/{happened}", true] = async (_,c) =>
+            Get("/thing/{happened}", async (x, token) =>
             {
-                await easyEvents.RaiseEventAsync(new ThingHappenedEvent((string) _.happened));
+                await easyEvents.RaiseEventAsync(new ThingHappenedEvent((string) x.happened));
                 return "Done";
-            };
+            });
 
-            Get["/log"] = _ =>
+            Get("/log", (x) =>
             {
                 var s = new StringBuilder();
-                
+
                 foreach (var message in Logger.Log)
                 {
                     s.AppendLine(message + "<br/>");
                 }
-                return  s.ToString();
-            };
+                return s.ToString();
+            });
         }
     }
 }

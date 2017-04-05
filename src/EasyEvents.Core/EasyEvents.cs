@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using ClientInterfaces;
     using Configuration;
+    using System.Reflection;
     using Exceptions;
 
     public class EasyEvents : IEasyEvents
@@ -73,7 +74,7 @@
         private bool CanHandleEvent(object handlerCandidate, IEvent @event)
         {
             return handlerCandidate.GetType().GetInterfaces().Any(x =>
-                x.IsGenericType &&
+                x.GetTypeInfo().IsGenericType &&
                 x.GetGenericTypeDefinition() == typeof(IEventHandler<>) &&
                 x.GenericTypeArguments.Count() == 1 &&
                 x.GenericTypeArguments[0] == @event.GetType());
