@@ -5,7 +5,7 @@
 - .NET Core
 - Strongly typed events
 - Async everywhere
-- Multiple event storage options (even SQL Server, because why wouldn't you want to store all your events in SQL Server!?)
+- Multiple event storage options; SqlServer, file system and in-memory (EventStore coming soon)
 
 Raise events, then create handlers that respond to the events and modify state _in memory_. 
 When your application re-starts, replay all of the events to restore your state with one line of code.
@@ -147,9 +147,7 @@ If not, here a quick summary:
 
 ### SQL Server
 
-Currently stores all events in a single table, but will soon seperate them by stream. 
-
-The database must exist, but the tables will be created for you if they do not exist.
+The database must exist, but an `events` table will be created for you with the correct schema.
 
 The only parameter to the `SqlEventStore` constructor is the connection string for the database where you wish to store your events.
 
@@ -161,6 +159,9 @@ easyEvents.Configure(new EasyEventsConfiguration
 ```
 
 Internally, the `SqlEventStore` uses all Async methods when writing to the database. 
+
+The SQL store currently only support a single consumer. When an event is raised, it is persisted and them replayed back to any handlers.
+Support for multiple applictions subscribing to the same event streams is listed in the 'Currently working on' section below.
 
 ### In Memory
 
@@ -175,6 +176,28 @@ easyEvents.Configure(new EasyEventsConfiguration
 });
 ```
 
+### File system
+
+Stores all events into files named after your stream, suffixed with `.stream.txt`. For example `app-events.stream.txt`.
+
+_The implementation of this store is still a little rough, so it's really only safe to use for local testing/development - which it's perfectly fine for. 
+See the 'Currently working on' section for how this is being improved_
+
+By default, events are stored in a `\_events` folder under the current directory. You can override this by providing an absolute path in the constructor.
+
+```csharp
+// Using the default path
+easyEvents.Configure(new EasyEventsConfiguration
+{
+    EventStore = new FileSystemEventStore()
+});
+
+// Using a custom path
+easyEvents.Configure(new EasyEventsConfiguration
+{
+    EventStore = new FileSystemEventStore("c:\events")
+});
+```
 
 ## Replaying events
 
@@ -213,8 +236,24 @@ class AppStartedEvent : ApplicationEvents
 ```
 
 ## Currently working on:
-- SQL storage - Option to use a table per stream
-- EventStore storage
-- File storage
-- Querying a stream's history using Linq
-- Option to hold certain streams in memory for faster querying (probably required for the above)
+- Stores
+    - All
+        - Stop having to store full Assembly name for events, find a .NET Core replacement for enumerating all types and finding them by their Type's 'Name' property only (then cache the result).
+    - SQL
+        - Support multiple consumers using `SqlDependency` (not yet in .NET Core)
+        - Versioning per-stream/Optimistic locking
+    - EventStore
+        - Build it
+        - Versioning/Optimistic locking
+    - File
+        - Split a stream over multiple files when it gets too large to be managable
+        - Don't hold all events in memory before ordering, open streams to all files and replay them in order as the stream is read.
+        - Don't serialize the payload, then the event. Store the event without serialization (CSV?)
+        - Integration tests
+    - In Memory
+        - Thread-safety
+- Querying a stream's history using LINQ
+    - Ideally by streaming, rather than loading the entire stream into memory
+- StreamState
+    - Improve API (instead of exposing IDictionary)
+    - Thread-safety

@@ -14,7 +14,7 @@
         public bool IsReplayingEvents { get; private set; }
 
         private static EasyEventsConfiguration _config;
-        
+
         private readonly Processors _processors;
         private readonly StreamState _streamState;
 
@@ -36,10 +36,9 @@
                 return;
 
             await _config.Store.RaiseEventAsync(@event).ConfigureAwait(false);
-            
+
             foreach (var processor in _processors.GetProcessorsForStream(@event.Stream))
                     await processor.Invoke(_streamState.GetStreamState(@event.Stream), @event).ConfigureAwait(false);
-
         }
 
         public async Task ReplayAllEventsAsync()
@@ -57,8 +56,10 @@
         private Task DispatchEvent(IEvent @event)
         {
             var targetHandlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
-         
+
             var handler = _config.HandlerFactory(targetHandlerType);
+            if (handler == null)
+                return Task.FromResult(0);
 
             if (!CanHandleEvent(handler, @event))
             {

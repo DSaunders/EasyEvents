@@ -6,6 +6,7 @@
     using Core.Stores;
     using Events.AppEvents;
     using Events.AppEvents.Handlers;
+    using Events.TestEvents;
     using Nancy;
     using Nancy.Bootstrapper;
     using Nancy.TinyIoc;
@@ -17,13 +18,15 @@
             container.Register<IEasyEvents, EasyEvents>().AsSingleton();
             container.Register<IEventHandler<AppStartedEvent>, AppStartedEventHandler>();
             container.Register<IEventHandler<ThingHappenedEvent>, ThingHappenedEventHandler>();
+            container.Register<IEventHandler<PageViewedEvent>, PageViewedEventHandler>();
 
             var events = container.Resolve<IEasyEvents>();
 
             events.Configure(new EasyEventsConfiguration
             {
-                Store = new SqlEventStore("server=.;database=test;Integrated Security=true;"),
-                HandlerFactory = type => container.Resolve(type)
+                Store = new FileSystemEventStore(),
+                //Store = new SqlEventStore("server=.;database=test;Integrated Security=true;"),
+                HandlerFactory = type => container.CanResolve(type) ? container.Resolve(type) : null
             });
 
             events.AddProcessorForStream(new AppEvent().Stream, async (c, e) =>

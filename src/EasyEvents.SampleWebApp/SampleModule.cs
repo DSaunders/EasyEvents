@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Core;
     using Events.AppEvents;
+    using Events.TestEvents;
     using Nancy;
 
     public class SampleModule : NancyModule
@@ -16,6 +17,12 @@
             {
                 await easyEvents.RaiseEventAsync(new ThingHappenedEvent((string) x.happened));
                 return "Done";
+            });
+
+            Get("/view/{page}", async (x, token) =>
+            {
+                await easyEvents.RaiseEventAsync(new PageViewedEvent((string)x.page));
+                return "Page view to " + x.page + " logged";
             });
 
             Get("/log", (x) =>

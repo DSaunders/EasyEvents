@@ -30,16 +30,13 @@
                     conn);
 
                 command.Parameters.AddWithValue("@0", @event.Stream);
-                // TODO: Is there a less coupled way to store/load the Type name with .NET Core?
-                // We used to be able to do AppDomain.CurrentDomain.GetAssemblies() and iterate the
-                // assemblies to find the type by it's FullName, but that doesn't exist now.
                 command.Parameters.AddWithValue("@1", @event.GetType().AssemblyQualifiedName);
                 command.Parameters.AddWithValue("@2", JsonConvert.SerializeObject(@event));
                 command.Parameters.AddWithValue("@3", DateTime.UtcNow);
 
                 await command.ExecuteScalarAsync().ConfigureAwait(false);
             }
-
+            
             await EventHandler.Invoke(@event).ConfigureAwait(false);
         }
 

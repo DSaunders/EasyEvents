@@ -62,6 +62,7 @@
             _eventList[2].SomeTestValue.ShouldBe("event 3");
         }
 
+
         [Fact]
         public async Task Throws_If_HandlerFactory_Returns_Type_That_Does_Not_Implement_Handler_Interface()
         {
@@ -102,6 +103,20 @@
             ex.ShouldBeOfType<EventHandlerException>();
             ex.Message.ShouldBe(
                 $"Cannot handle {nameof(SimpleTextEvent)}. Handler returned from Factory does not implement {nameof(IEventHandler<IEvent>)}<{nameof(SimpleTextEvent)}>");
+        }
+
+        [Fact]
+        public async Task Does_Not_Throw_If_HandlerFactory_Returns_No_EventHandlers()
+        {
+            // Given
+            _easyEvents.Configure(new EasyEventsConfiguration
+            {
+                HandlerFactory = type => null,
+                Store = new InMemoryEventStore()
+            });
+
+            // When
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("this should NOT explode"));
         }
 
         [Fact]

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyEvents.Core", "EasyEven
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyEvents.SampleWebApp", "EasyEvents.SampleWebApp\EasyEvents.SampleWebApp.csproj", "{130C9A32-D135-487D-9335-B75EE494FEC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyEvents.Core.IntegrationTests", "EasyEvents.Core.IntegrationTests\EasyEvents.Core.IntegrationTests.csproj", "{990852BA-15B1-437D-A3E9-8608837C1809}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{130C9A32-D135-487D-9335-B75EE494FEC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{130C9A32-D135-487D-9335-B75EE494FEC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{130C9A32-D135-487D-9335-B75EE494FEC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{990852BA-15B1-437D-A3E9-8608837C1809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990852BA-15B1-437D-A3E9-8608837C1809}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990852BA-15B1-437D-A3E9-8608837C1809}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990852BA-15B1-437D-A3E9-8608837C1809}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
