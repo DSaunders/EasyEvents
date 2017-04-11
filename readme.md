@@ -247,9 +247,6 @@ class AppStartedEvent : ApplicationEvents
         - Versioning/Optimistic locking
     - File
         - Split a stream over multiple files when it gets too large to be managable
-        - Don't hold all events in memory before ordering, open streams to all files and replay them in order as the stream is read.
-        - Don't serialize the payload, then the event. Store the event without serialization (CSV?)
-        - Integration tests
     - In Memory
         - Thread-safety
 - Querying a stream's history using LINQ
