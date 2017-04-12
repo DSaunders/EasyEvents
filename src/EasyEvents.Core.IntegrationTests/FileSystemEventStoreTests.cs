@@ -1,5 +1,6 @@
 ﻿namespace EasyEvents.Core.IntegrationTests
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
@@ -16,6 +17,7 @@
         public FileSystemEventStoreTests()
         {
             _eventPath = Path.Combine(Directory.GetCurrentDirectory(), _folderName);
+            Console.WriteLine(_eventPath);
         }
 
         [Fact]
