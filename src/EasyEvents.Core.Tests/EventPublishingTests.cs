@@ -25,19 +25,32 @@
 
             _easyEvents.Configure(new EasyEventsConfiguration
             {
-                HandlerFactory = type => _simpleTextEventHandler,
+                HandlerFactory = type =>
+                {
+                    return (type == typeof(IEventHandler<SimpleTextEvent>))
+                    ? _simpleTextEventHandler
+                    : null;
+
+                },
                 Store = new InMemoryEventStore()
             });
+
+            DateAbstraction.Pause();
+
+            //  while (!System.Diagnostics.Debugger.IsAttached)
+            // {
+            //     System.Threading.Tasks.Task.Delay(100);
+            // }
         }
 
         [Fact]
-        public void Event_Calls_Handlers()
+        public async Task Event_Calls_Handlers()
         {
             // Given
             var testEvent = new SimpleTextEvent("test");
 
             // When
-            _easyEvents.RaiseEventAsync(testEvent);
+            await _easyEvents.RaiseEventAsync(testEvent);
 
             // Then
             _eventList.Count.ShouldBe(1);
@@ -45,16 +58,16 @@
         }
 
         [Fact]
-        public void Replays_All_Events_In_Order()
+        public async Task Replays_All_Events_In_Order()
         {
             // Given
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("event 1"));
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("event 2"));
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("event 3"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("event 1"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("event 2"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("event 3"));
             _eventList.Clear();
 
             // When
-            _easyEvents.ReplayAllEventsAsync();
+            await _easyEvents.ReplayAllEventsAsync();
 
             // Then
             _eventList[0].SomeTestValue.ShouldBe("event 1");
@@ -120,7 +133,7 @@
         }
 
         [Fact]
-        public void Adds_Processors_To_Event_Streams()
+        public async Task Adds_Processors_To_Event_Streams()
         {
             // Given
             _easyEvents.AddProcessorForStream("TestStream", async (s, e) =>
@@ -133,7 +146,7 @@
             });
 
             // When
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("First event"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("First event"));
 
             // Then
             _eventList.Count.ShouldBe(2);
@@ -141,7 +154,7 @@
         }
 
         [Fact]
-        public void Does_Not_Run_Processors_On_Incorrect_Strean()
+        public async Task Does_Not_Run_Processors_On_Incorrect_Strean()
         {
             // Given
             _easyEvents.AddProcessorForStream("SomeOtherStream", async (s, e) =>
@@ -150,31 +163,31 @@
             });
 
             // When
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("First event"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("First event"));
 
             // Then
             _eventList.Count.ShouldBe(1);
         }
 
         [Fact]
-        public void Allows_Processors_To_Store_State_For_A_Stream()
+        public async Task Allows_Processors_To_Store_State_For_A_Stream()
         {
             // Given
             _easyEvents.AddProcessorForStream("TestStream", async (s, e) =>
             {
                 s["count"] = s.ContainsKey("count")
-                    ? (int) s["count"] + 1
+                    ? (int)s["count"] + 1
                     : 1;
 
-                if ((int) s["count"] == 3)
+                if ((int)s["count"] == 3)
                     await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Third event fired"));
             });
 
             // When
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 1"));
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 2"));
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 3"));
-            _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 4"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 1"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 2"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 3"));
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event 4"));
 
             // Then
             _eventList.Count.ShouldBe(5);
@@ -186,7 +199,7 @@
         }
 
         [Fact]
-        public void Handlers_Raise_Events_During_Normal_Operation()
+        public async Task Handlers_Raise_Events_During_Normal_Operation()
         {
             // Given
             var store = new TestEventStore();
@@ -202,7 +215,7 @@
             });
 
             // When
-            _easyEvents.RaiseEventAsync(new RaisesAnotherEvent()).Wait();
+            await _easyEvents.RaiseEventAsync(new RaisesAnotherEvent());
 
             // Then
             store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
@@ -210,7 +223,7 @@
         }
 
         [Fact]
-        public void Does_Not_Raise_Events_Again_When_Replaying_Events()
+        public async Task Does_Not_Raise_Events_Again_When_Replaying_Events()
         {
             // Given
             var store = new TestEventStore();
@@ -224,8 +237,8 @@
                     return new NullEventHandler();
                 }
             });
-            _easyEvents.RaiseEventAsync(new RaisesAnotherEvent()).Wait();
-            
+            await _easyEvents.RaiseEventAsync(new RaisesAnotherEvent());
+
             // When
             _easyEvents.ReplayAllEventsAsync().Wait();
 
@@ -233,6 +246,45 @@
             store.Events.Count.ShouldBe(2);
             store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
             store.Events[1].ShouldBeOfType<NullEvent>();
+        }
+
+        [Fact]
+        public async Task Populates_DateTime_Property_With_UTC_DateTime_If_Property_Exists()
+        {
+            // Given
+            var testEvent = new HasDateTimePropertyEvent();
+
+            // When
+            await _easyEvents.RaiseEventAsync(testEvent);
+
+            // Then
+            testEvent.DateTime.ShouldBe(DateAbstraction.UtcNow);
+        }
+
+        [Fact]
+        public async Task Does_Not_Populate_DateTime_When_Property_Is_Incorrect_Type()
+        {
+            // Given
+            var testEvent = new HasDateTimePropertyWithIncorrectTypeEvent();
+
+            // When
+            await _easyEvents.RaiseEventAsync(testEvent);
+
+            // Then
+            testEvent.DateTime.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task Does_Not_Populate_DateTime_When_Property_Has_No_Setter()
+        {
+            // Given
+            var testEvent = new HasDateTimePropertyWithNoSetterEvent();
+
+            // When
+            await _easyEvents.RaiseEventAsync(testEvent);
+
+            // Then
+            testEvent.DateTime.ShouldBeNull();
         }
     }
 }

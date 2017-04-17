@@ -13,9 +13,10 @@ namespace EasyEvents.Core.Tests.TestEvents
             _eventList = eventList;
         }
 
-        public async Task HandleEventAsync(SimpleTextEvent @event)
+        public Task HandleEventAsync(SimpleTextEvent @event)
         {
             _eventList.Add(@event);
+            return Task.CompletedTask;
         }
     }
 }
