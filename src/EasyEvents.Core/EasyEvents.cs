@@ -35,10 +35,12 @@
             if (IsReplayingEvents)
                 return;
 
+            PopulateDateTimeProperty(@event);
+
             await _config.Store.RaiseEventAsync(@event).ConfigureAwait(false);
 
             foreach (var processor in _processors.GetProcessorsForStream(@event.Stream))
-                    await processor.Invoke(_streamState.GetStreamState(@event.Stream), @event).ConfigureAwait(false);
+                await processor.Invoke(_streamState.GetStreamState(@event.Stream), @event).ConfigureAwait(false);
         }
 
         public async Task ReplayAllEventsAsync()
@@ -69,7 +71,7 @@
             }
 
             var method = targetHandlerType.GetMethod(nameof(IEventHandler<IEvent>.HandleEventAsync));
-            return (Task)method.Invoke(handler, new []{@event});
+            return (Task)method.Invoke(handler, new[] { @event });
         }
 
         private bool CanHandleEvent(object handlerCandidate, IEvent @event)
@@ -80,5 +82,14 @@
                 x.GenericTypeArguments.Count() == 1 &&
                 x.GenericTypeArguments[0] == @event.GetType());
         }
+
+        private void PopulateDateTimeProperty(IEvent @event)
+        {
+            var property = @event.GetType().GetProperty("DateTime");
+            if (property != null &&
+            property.PropertyType == typeof(DateTime))
+                property.SetValue(@event, DateAbstraction.UtcNow);
+        }
+
     }
 }

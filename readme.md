@@ -36,6 +36,8 @@ public class UserCreated : IEvent
 
 The `stream` property is used to logically segregate your events. For example, you might have a stream for user account events (password changed, logged in), another for shopping cart events (item added, item removed) etc.
 
+If your Event contains a property named `DateTime` (that is a `System.DateTime`), it will be auto-populated for you with the current date and time in UTC.
+
 ## Event Handlers
 
 Event handlers subscribe to and process a single event, encouraging terse code that follows the single responsibility principle. 

@@ -273,18 +273,5 @@
             // Then
             testEvent.DateTime.ShouldBeNull();
         }
-
-        [Fact]
-        public async Task Does_Not_Populate_DateTime_When_Property_Has_No_Setter()
-        {
-            // Given
-            var testEvent = new HasDateTimePropertyWithNoSetterEvent();
-
-            // When
-            await _easyEvents.RaiseEventAsync(testEvent);
-
-            // Then
-            testEvent.DateTime.ShouldBeNull();
-        }
     }
 }
