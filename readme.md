@@ -163,7 +163,7 @@ easyEvents.Configure(new EasyEventsConfiguration
 Internally, the `SqlEventStore` uses all Async methods when writing to the database. 
 
 The SQL store currently only support a single consumer. When an event is raised, it is persisted and them replayed back to any handlers.
-Support for multiple applictions subscribing to the same event streams is listed in the 'Currently working on' section below.
+Support for multiple applictions subscribing to the same event stream is listed in the 'Currently working on' section below.
 
 ### In Memory
 
@@ -181,9 +181,6 @@ easyEvents.Configure(new EasyEventsConfiguration
 ### File system
 
 Stores all events into files named after your stream, suffixed with `.stream.txt`. For example `app-events.stream.txt`.
-
-_The implementation of this store is still a little rough, so it's really only safe to use for local testing/development - which it's perfectly fine for. 
-See the 'Currently working on' section for how this is being improved_
 
 By default, events are stored in a `\_events` folder under the current directory. You can override this by providing an absolute path in the constructor.
 
