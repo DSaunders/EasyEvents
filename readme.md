@@ -71,7 +71,7 @@ await easyEvents.ReplayAllEventsAsync();
 
 ## Processors
 
-Add processors to your streams that run for each event put on a stream.
+Processors run for every event added to a given stream.
 
 Use processors to raise new events, project data out into a read model used for reporting, or just to write to a log.
 
