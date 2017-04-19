@@ -7,10 +7,10 @@
 - Async everywhere
 - Multiple event storage options; SqlServer, file system and in-memory (EventStore coming soon)
 
-Raise events, then create handlers that respond to the events and modify state _in memory_. 
+Raise events, then create handlers that respond to the events and modify state. 
 When your application re-starts, replay all of the events to restore your state with one line of code.
 
-EasyEvents makes is easy to persist events - not state. 
+EasyEvents makes is easy to persist events - not state.
 
 ## Installation
 
