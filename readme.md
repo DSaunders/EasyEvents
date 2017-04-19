@@ -119,7 +119,7 @@ Incude something like this in your applications startup/bootsrapper class:
 ```csharp
 easyEvents.Configure(new EasyEventsConfiguration
 {
-    EventStore = new SqlEventStore("server=.;database=test;"),
+    Store = new SqlEventStore("server=.;database=test;"),
     HandlerFactory = type => { return container.Resolve(type); }
 });
 ```
@@ -156,7 +156,7 @@ The only parameter to the `SqlEventStore` constructor is the connection string f
 ```csharp
 easyEvents.Configure(new EasyEventsConfiguration
 {
-    EventStore = new SqlEventStore("server=.;database=test;")
+    Store = new SqlEventStore("server=.;database=test;")
 });
 ```
 
@@ -174,7 +174,7 @@ You'll only use this for unit testing, and perhaps when testing your application
 ```csharp
 easyEvents.Configure(new EasyEventsConfiguration
 {
-    EventStore = new InMemoryEventStore()
+    Store = new InMemoryEventStore()
 });
 ```
 
@@ -191,13 +191,13 @@ By default, events are stored in a `\_events` folder under the current directory
 // Using the default path
 easyEvents.Configure(new EasyEventsConfiguration
 {
-    EventStore = new FileSystemEventStore()
+    Store = new FileSystemEventStore()
 });
 
 // Using a custom path
 easyEvents.Configure(new EasyEventsConfiguration
 {
-    EventStore = new FileSystemEventStore("c:\events")
+    Store = new FileSystemEventStore("c:\events")
 });
 ```
 
