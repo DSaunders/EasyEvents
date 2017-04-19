@@ -80,7 +80,7 @@ easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
 {
     if (evt is UserCreated)
     {
-        await events.RaiseEventAsync(new HaveAParty());
+        await easyEvents.RaiseEventAsync(new HaveAParty());
     }
 });
 ```
@@ -103,7 +103,7 @@ easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
     
     // Number of users is a multiple of 10
     if (numberOfUsers % 10 == 0)
-        await events.RaiseEventAsync(new EveryTenUsersEvent());
+        await easyEvents.RaiseEventAsync(new EveryTenUsersEvent());
         
     // Update context for the next event    
     context["numberOfUsers"] = numberOfUsers;
