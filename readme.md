@@ -224,12 +224,12 @@ It's logical to use the 'aggregate roots' in your application as your event stre
 A neat way to do this in EasyEvents is to have a base class `IEvent` for each aggregate root, this will contain the stream name. Then, just derive each event from the base class, ensuring they always remain on the same stream.
 
 ```csharp
-abstract class ApplicationEvents : IEvent
+abstract class ApplicationEvent : IEvent
 {
     public string Stream => "AppEvents";
 }
 
-class AppStartedEvent : ApplicationEvents
+class AppStartedEvent : ApplicationEvent
 {
 }
 ```
