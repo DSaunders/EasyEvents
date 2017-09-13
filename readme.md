@@ -85,7 +85,7 @@ easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
 });
 ```
 
-We also have access to the the streams 'context' here. This is a `Dictionary<string,object>` that can be used to store anything you like between events. This example uses the stream context to track the number of users, raising a new event every 10 users:
+We also have access to the the stream's 'context' here. This is a `Dictionary<string,object>` that can be used to store anything you like between events. This example uses the stream context to track the number of users, raising a new event every 10 users:
 
 ```csharp
 easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
