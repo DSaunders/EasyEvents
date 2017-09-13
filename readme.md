@@ -114,7 +114,7 @@ easyEvents.AddProcessorForStream("subscriptions", async (context, evt) =>
 
 Configuring EasyEvents is, well.. easy!
 
-Incude something like this in your applications startup/bootsrapper class:
+Incude something like this in your applications startup/bootstrapper class:
 
 ```csharp
 easyEvents.Configure(new EasyEventsConfiguration
