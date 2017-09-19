@@ -32,13 +32,12 @@
 
         private void PrimeCache()
         {
-            var deps = DependencyContext
-                .Default
-                .GetRuntimeAssemblyNames(Environment.OSVersion.Platform.ToString());
+            var platform = Environment.OSVersion.Platform.ToString();
+            var runtimeAssemblyNames = DependencyContext.Default.GetRuntimeAssemblyNames(platform);
 
-            foreach (var lib in deps)
+            foreach (var assemblyName in runtimeAssemblyNames)
             {
-                var assembly = Assembly.Load(lib);
+                var assembly = Assembly.Load(assemblyName);
                 var iEventTypes = assembly
                     .ExportedTypes
                     .Where(t => typeof(IEvent).IsAssignableFrom(t));
