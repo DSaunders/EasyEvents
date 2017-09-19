@@ -35,9 +35,9 @@ public class UserCreated : IEvent
 ```csharp
 public class UserCreatedHandler : IEventHandler<UserCreated>
 {
-    public async Task HandleEvent(UserCreated userCreatedEvent)
+    public async Task HandleEvent(UserCreated ev)
     {
-        Console.WriteLine("Hello, " + userCreatedEvent.UserName);
+        Console.WriteLine("Hello, " + ev.UserName);
     }
 }
 ```
