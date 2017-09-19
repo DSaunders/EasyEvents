@@ -54,6 +54,12 @@
 
         private async Task DispatchEvent(IEvent @event)
         {
+            await DisptchEventToHandler(@event);
+            await RunProcessorsForEvent(@event);
+        }
+
+        private async Task DisptchEventToHandler(IEvent @event)
+        {
             var targetHandlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
 
             var handler = _config.HandlerFactory(targetHandlerType);
@@ -64,14 +70,16 @@
             {
                 var eventTypeName = @event.GetType().Name;
                 throw new EventHandlerException($"Cannot handle {eventTypeName}. " +
-                                    $"Handler returned from Factory does not implement {nameof(IEventHandler<IEvent>)}<{eventTypeName}>");
+                                                $"Handler returned from Factory does not implement {nameof(IEventHandler<IEvent>)}<{eventTypeName}>");
             }
 
             // Call the event handler..
             var method = targetHandlerType.GetMethod(nameof(IEventHandler<IEvent>.HandleEventAsync));
-            await (Task)method.Invoke(handler, new[] { @event });
+            await (Task) method.Invoke(handler, new[] {@event});
+        }
 
-            // .. run any processors
+        private async Task RunProcessorsForEvent(IEvent @event)
+        {
             foreach (var processor in _processors.GetProcessorsForStream(@event.Stream))
                 await processor.Invoke(_streamState.GetStreamState(@event.Stream), @event).ConfigureAwait(false);
         }

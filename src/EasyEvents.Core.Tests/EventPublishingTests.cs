@@ -298,6 +298,24 @@
             ((SimpleTextEvent)store.Events[1]).SomeTestValue.ShouldBe("Raised by processor");
         }
 
+        [Fact]
+        public async Task Still_Runs_Processors_When_No_Handler_For_Event()
+        {
+            // Given
+            var log = new List<string>();
+            _easyEvents.AddProcessorForStream("TestStream", (s, e) =>
+            {
+                log.Add("Processor Ran");
+                return Task.CompletedTask;
+            });
+
+            // When
+            await _easyEvents.RaiseEventAsync(new NullEvent());
+
+            // Then
+            log.Count.ShouldBe(1);
+        }
+
 
         [Fact]
         public async Task Populates_DateTime_Property_With_UTC_DateTime_If_Property_Exists()
