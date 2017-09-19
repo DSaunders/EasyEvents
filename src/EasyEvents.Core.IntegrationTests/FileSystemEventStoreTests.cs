@@ -1,24 +1,16 @@
 ﻿namespace EasyEvents.Core.IntegrationTests
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
     using ClientInterfaces;
     using Shouldly;
-    using Stores;
+    using Stores.FileSystem;
     using Xunit;
 
     public class FileSystemEventStoreTests
     {
-        private readonly string _folderName = "/intergration-test-events";
-        private readonly string _eventPath;
-
-        public FileSystemEventStoreTests()
-        {
-            _eventPath = Path.Combine(Directory.GetCurrentDirectory(), _folderName);
-            Console.WriteLine(_eventPath);
-        }
+        private const string EventPath = "/integration-test-events";
 
         [Fact]
         public async Task Run_Test_In_Order()
@@ -31,14 +23,14 @@
 
         public async Task Does_Not_Throw_Replaying_No_Events()
         {
-            var store = new FileSystemEventStore(_folderName);
+            var store = new FileSystemEventStore(EventPath);
             DeleteEvents();
             await store.ReplayAllEvents();
         }
 
         public async Task Raises_And_Replays_Single_Event()
         {
-            var store = new FileSystemEventStore(_folderName);
+            var store = new FileSystemEventStore(EventPath);
             DeleteEvents();
 
             IEvent eventReceived = null;
@@ -56,7 +48,7 @@
 
         public async Task Replays_All_Events_In_Order()
         {
-            var store = new FileSystemEventStore(_folderName);
+            var store = new FileSystemEventStore(EventPath);
             DeleteEvents();
 
             var eventsReceived = new List<IEvent>();
@@ -87,7 +79,7 @@
 
         public async Task Aggregates_Multiple_Streams_In_Order()
         {
-            var store = new FileSystemEventStore(_folderName);
+            var store = new FileSystemEventStore(EventPath);
             DeleteEvents();
 
             var eventsReceived = new List<IEvent>();
@@ -119,8 +111,8 @@
 
         private void DeleteEvents()
         {
-            if (Directory.Exists(_eventPath))
-                Directory.Delete(_eventPath, true);
+            if (Directory.Exists(EventPath))
+                Directory.Delete(EventPath, true);
         }
     }
 }

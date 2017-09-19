@@ -19,4 +19,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyModel">
+      <HintPath>..\..\..\..\Users\Dave\.nuget\packages\microsoft.extensions.dependencymodel\1.1.0\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

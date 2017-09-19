@@ -1,4 +1,4 @@
-﻿namespace EasyEvents.Core.Stores
+﻿namespace EasyEvents.Core.Stores.InMemory
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@
         {
             _events = new List<IEvent>();
         }
-        
+
         public Task RaiseEventAsync(IEvent @event)
         {
             _events.Add(@event);

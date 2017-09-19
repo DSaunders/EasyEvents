@@ -1,4 +1,4 @@
-﻿namespace EasyEvents.Core.Stores
+﻿namespace EasyEvents.Core.Stores.Sql
 {
     using System;
     using System.Data.SqlClient;
@@ -6,16 +6,18 @@
     using ClientInterfaces;
     using Newtonsoft.Json;
 
-    public class SqlEventStore : IStore
+    public class SqlServerEventStore : IStore
     {
         private readonly string _connectionString;
+        private readonly EventTypeCache _eventTypeCache;
         private bool _tableExists;
 
         public Func<IEvent, Task> EventHandler { get; set; }
 
-        public SqlEventStore(string connectionString)
+        public SqlServerEventStore(string connectionString)
         {
             _connectionString = connectionString;
+            _eventTypeCache = new EventTypeCache();
         }
 
         public async Task RaiseEventAsync(IEvent @event)
@@ -30,13 +32,13 @@
                     conn);
 
                 command.Parameters.AddWithValue("@0", @event.Stream);
-                command.Parameters.AddWithValue("@1", @event.GetType().AssemblyQualifiedName);
+                command.Parameters.AddWithValue("@1", @event.GetType().Name);
                 command.Parameters.AddWithValue("@2", JsonConvert.SerializeObject(@event));
                 command.Parameters.AddWithValue("@3", DateTime.UtcNow);
 
                 await command.ExecuteScalarAsync().ConfigureAwait(false);
             }
-            
+
             await EventHandler.Invoke(@event).ConfigureAwait(false);
         }
 
@@ -47,13 +49,13 @@
                 conn.Open();
                 await EnsureStreamTableExists(conn).ConfigureAwait(false);
 
-                var command = new SqlCommand("Select * from events order by created asc", conn);
+                var command = new SqlCommand("select * from events order by created asc", conn);
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         var eventType = (string)reader["eventName"];
-                        var type = GetEventType(eventType);
+                        var type = _eventTypeCache.GetEventTypeFromName(eventType);
                         if (type == null)
                             continue;
 
@@ -62,11 +64,6 @@
                     }
                 }
             }
-        }
-
-        private Type GetEventType(string eventName)
-        {
-            return Type.GetType(eventName);
         }
 
         private async Task EnsureStreamTableExists(SqlConnection conn)

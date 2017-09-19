@@ -52,10 +52,11 @@
             _processors.AddProcessorForStream(streamName, processor);
         }
 
+
         private async Task DispatchEvent(IEvent @event)
         {
-            await DisptchEventToHandler(@event);
-            await RunProcessorsForEvent(@event);
+            await DisptchEventToHandler(@event).ConfigureAwait(false);
+            await RunProcessorsForEvent(@event).ConfigureAwait(false);
         }
 
         private async Task DisptchEventToHandler(IEvent @event)
@@ -73,9 +74,8 @@
                                                 $"Handler returned from Factory does not implement {nameof(IEventHandler<IEvent>)}<{eventTypeName}>");
             }
 
-            // Call the event handler..
             var method = targetHandlerType.GetMethod(nameof(IEventHandler<IEvent>.HandleEventAsync));
-            await (Task) method.Invoke(handler, new[] {@event});
+            await ((Task) method.Invoke(handler, new[] {@event})).ConfigureAwait(false);
         }
 
         private async Task RunProcessorsForEvent(IEvent @event)

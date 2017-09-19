@@ -2,6 +2,7 @@
 {
     using System;
     using Stores;
+    using Stores.InMemory;
 
     public class EasyEventsConfiguration
     {

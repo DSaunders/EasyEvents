@@ -7,6 +7,7 @@
     using Exceptions;
     using Shouldly;
     using Stores;
+    using Stores.InMemory;
     using TestEvents;
     using Xunit;
 

@@ -8,6 +8,7 @@
     using Newtonsoft.Json;
     using Shouldly;
     using Stores;
+    using Stores.Sql;
     using Xunit;
 
     public class SqlEventStoreTests
@@ -28,7 +29,7 @@
 
         public async Task Raises_And_Replays_Single_Event()
         {
-            var store = new SqlEventStore(_conStr);
+            var store = new SqlServerEventStore(_conStr);
             DeleteEventsTable();
 
             IEvent eventReceived = null;
@@ -47,7 +48,7 @@
 
         public async Task Replays_All_Events_In_Order()
         {
-            var store = new SqlEventStore(_conStr);
+            var store = new SqlServerEventStore(_conStr);
             DeleteEventsTable();
 
             var eventsReceived = new List<IEvent>();
@@ -78,7 +79,7 @@
 
         public async Task Subscribes_To_Events_From_Outside_Application()
         {
-            var store = new SqlEventStore(_conStr);
+            var store = new SqlServerEventStore(_conStr);
             DeleteEventsTable();
 
             IEvent eventReceived = null;
