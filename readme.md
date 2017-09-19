@@ -41,7 +41,7 @@ public class UserCreatedHandler : IEventHandler<UserCreated>
 ```
 
 ```csharp
-await easyEvents.RaiseEventAsync(new UserCreated("Bob"));
+await easyEvents.RaiseEventAsync(new UserCreated("Jane"));
 ```
 
 See the [Getting Started](https://github.com/DSaunders/EasyEvents/wiki/Getting-Started) to find out more.
