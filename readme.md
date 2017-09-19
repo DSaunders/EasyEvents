@@ -5,7 +5,7 @@
 - .NET Core
 - Strongly typed events and handlers
 - Async everywhere
-- Add processors that run for every event on a stream (to project in to reporting, raise new events or just for logging)
+- Add processors that run for every event on a stream (to project into reporting, raise new events or just for logging)
 - Multiple event storage options; SqlServer, file system and in-memory (EventStore coming soon)
 
 Raise events, then create handlers that respond to the events and modify state. 
