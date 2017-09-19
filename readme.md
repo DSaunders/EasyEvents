@@ -12,7 +12,7 @@ When your application re-starts, replay all of the events to restore your state 
 
 Add processors that run for every event on a stream (to project into reporting, raise new events or just for logging).
 
-EasyEvents makes is easy to persist events - not state.
+**EasyEvents makes is easy to persist events - not state.**
 
 ```
 PM > Install-Package EasyEvents.Core
