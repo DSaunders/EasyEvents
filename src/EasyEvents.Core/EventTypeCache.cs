@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using ClientInterfaces;
@@ -47,9 +48,9 @@
                     }
 
                 }
-                catch
+                catch (FileNotFoundException ex)
                 {
-                    // ☹ Some of the core assemblies throw a FileNotFound exception.
+                    // ☹ Some of the core assemblies throw a FileNotFound exception when calling Load.
                     // Not sure why, this whole thing is just nasty.
                     // There must be a nicer .NET core version of:
                     //   var types = AppDomain.CurrentDomain.GetAssemblies()
