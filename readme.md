@@ -5,7 +5,7 @@
 - .NET Core
 - Strongly typed events and handlers
 - Async everywhere
-- Multiple event storage options; SqlServer, file system and in-memory (EventStore coming soon)
+- Event persistence handled for you - SqlServer, file system or in-memory (EventStore coming soon)
 
 Raise events, then create handlers that respond to the events and modify application state in memory. 
 When your application re-starts, replay all of the events to restore your state with one line of code.
