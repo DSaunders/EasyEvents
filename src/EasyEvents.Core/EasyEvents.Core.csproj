@@ -1,28 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.0.1</Version>
+    <Version>2.0.1</Version>
     <authors>Dave Saunders</authors>
     <owners>Dave Saunders</owners>
     <description>A library designed to make event sourcing simple in small projects.</description>
     <PackageProjectUrl>https://github.com/DSaunders/EasyEvents</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/DSaunders/EasyEvents/blob/master/LICENSE</PackageLicenseUrl>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.Extensions.DependencyModel">
-      <HintPath>..\..\..\..\Users\Dave\.nuget\packages\microsoft.extensions.dependencymodel\1.1.0\lib\netstandard1.6\Microsoft.Extensions.DependencyModel.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

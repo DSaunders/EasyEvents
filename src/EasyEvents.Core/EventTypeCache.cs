@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using ClientInterfaces;
@@ -33,29 +32,20 @@
 
         private void PrimeCache()
         {
-            foreach (var lib in DependencyContext.Default.RuntimeLibraries)
+            var deps = DependencyContext
+                .Default
+                .GetRuntimeAssemblyNames(Environment.OSVersion.Platform.ToString());
+
+            foreach (var lib in deps)
             {
-                try
-                {
-                    var assembly = Assembly.Load(new AssemblyName(lib.Name));
-                    var iEventTypes = assembly
-                        .ExportedTypes
-                        .Where(t => typeof(IEvent).IsAssignableFrom(t));
+                var assembly = Assembly.Load(lib);
+                var iEventTypes = assembly
+                    .ExportedTypes
+                    .Where(t => typeof(IEvent).IsAssignableFrom(t));
 
-                    foreach (var eventType in iEventTypes)
-                    {
-                        _typeCache.Add(eventType.Name, eventType);
-                    }
-
-                }
-                catch (FileNotFoundException ex)
+                foreach (var eventType in iEventTypes)
                 {
-                    // ☹ Some of the core assemblies throw a FileNotFound exception when calling Load.
-                    // Not sure why, this whole thing is just nasty.
-                    // There must be a nicer .NET core version of:
-                    //   var types = AppDomain.CurrentDomain.GetAssemblies()
-                    //       .SelectMany(s => s.GetTypes())
-                    //       .Where(p => type.IsAssignableFrom(p));
+                    _typeCache.Add(eventType.Name, eventType);
                 }
             }
 

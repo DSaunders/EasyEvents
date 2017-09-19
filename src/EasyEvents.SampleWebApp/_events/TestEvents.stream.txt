@@ -1,0 +1,2 @@
+PageViewedEvent	{"PageName":"yo"}	2017-09-19T23:06:31.4694015Z
+PageViewedEvent	{"PageName":"yo"}	2017-09-19T23:11:23.5184685Z

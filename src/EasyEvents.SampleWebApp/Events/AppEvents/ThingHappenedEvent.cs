@@ -1,6 +1,6 @@
 ﻿namespace EasyEvents.SampleWebApp.Events.AppEvents
 {
-    internal class ThingHappenedEvent : AppEvent
+    public class ThingHappenedEvent : AppEvent
     {
         public string TheThing { get; }
 

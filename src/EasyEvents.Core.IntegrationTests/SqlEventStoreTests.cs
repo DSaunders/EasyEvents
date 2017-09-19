@@ -7,7 +7,6 @@
     using ClientInterfaces;
     using Newtonsoft.Json;
     using Shouldly;
-    using Stores;
     using Stores.Sql;
     using Xunit;
 
@@ -44,8 +43,7 @@
             eventReceived.Stream.ShouldBe("test-stream");
             ((TestEvent) eventReceived).TestValue.ShouldBe("Hello, World!");
         }
-
-
+        
         public async Task Replays_All_Events_In_Order()
         {
             var store = new SqlServerEventStore(_conStr);

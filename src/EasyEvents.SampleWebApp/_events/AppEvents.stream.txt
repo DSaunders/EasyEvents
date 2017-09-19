@@ -1,0 +1,6 @@
+AppStartedEvent	{}	2017-09-19T23:06:24.8787472Z
+AppStartedEvent	{}	2017-09-19T23:06:39.6382010Z
+AppStartedEvent	{}	2017-09-19T23:10:28.6590132Z
+AppStartedEvent	{}	2017-09-19T23:10:58.5505405Z
+ThingHappenedEvent	{"TheThing":"happened"}	2017-09-19T23:11:07.7253557Z
+AppStartedEvent	{}	2017-09-19T23:11:19.2384536Z

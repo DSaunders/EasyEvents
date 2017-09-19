@@ -1,6 +1,6 @@
 ﻿namespace EasyEvents.SampleWebApp.Events.AppEvents
 {
-    internal class AppStartedEvent : AppEvent
+    public class AppStartedEvent : AppEvent
     {
     }
 }
