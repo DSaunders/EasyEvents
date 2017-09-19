@@ -38,9 +38,6 @@
             PopulateDateTimeProperty(@event);
 
             await _config.Store.RaiseEventAsync(@event).ConfigureAwait(false);
-
-            foreach (var processor in _processors.GetProcessorsForStream(@event.Stream))
-                await processor.Invoke(_streamState.GetStreamState(@event.Stream), @event).ConfigureAwait(false);
         }
 
         public async Task ReplayAllEventsAsync()
@@ -55,13 +52,13 @@
             _processors.AddProcessorForStream(streamName, processor);
         }
 
-        private Task DispatchEvent(IEvent @event)
+        private async Task DispatchEvent(IEvent @event)
         {
             var targetHandlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
 
             var handler = _config.HandlerFactory(targetHandlerType);
             if (handler == null)
-                return Task.FromResult(0);
+                return;
 
             if (!CanHandleEvent(handler, @event))
             {
@@ -70,8 +67,13 @@
                                     $"Handler returned from Factory does not implement {nameof(IEventHandler<IEvent>)}<{eventTypeName}>");
             }
 
+            // Call the event handler..
             var method = targetHandlerType.GetMethod(nameof(IEventHandler<IEvent>.HandleEventAsync));
-            return (Task)method.Invoke(handler, new[] { @event });
+            await (Task)method.Invoke(handler, new[] { @event });
+
+            // .. run any processors
+            foreach (var processor in _processors.GetProcessorsForStream(@event.Stream))
+                await processor.Invoke(_streamState.GetStreamState(@event.Stream), @event).ConfigureAwait(false);
         }
 
         private bool CanHandleEvent(object handlerCandidate, IEvent @event)
@@ -87,8 +89,11 @@
         {
             var property = @event.GetType().GetProperty("DateTime");
             if (property != null &&
-            property.PropertyType == typeof(DateTime))
+            property.PropertyType == typeof(DateTime) &&
+            property.CanWrite)
+            {
                 property.SetValue(@event, DateAbstraction.UtcNow);
+            }
         }
 
     }

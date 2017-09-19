@@ -238,18 +238,11 @@ class AppStartedEvent : ApplicationEvent
 - Stores
     - All
         - Stop having to store full Assembly name for events, find a .NET Core replacement for enumerating all types and finding them by their Type's 'Name' property only (then cache the result).
-    - SQL
-        - Support multiple consumers using `SqlDependency` (not yet in .NET Core)
-        - Versioning per-stream/Optimistic locking
-    - EventStore
-        - Build it
-        - Versioning/Optimistic locking
+    - EventStore (to allow EasyEvents to work with more than one consumer)
     - File
-        - Split a stream over multiple files when it gets too large to be managable
-    - In Memory
-        - Thread-safety
+        - Split a stream over multiple files when it gets too large to be managable   
 - Querying a stream's history using LINQ
     - Ideally by streaming, rather than loading the entire stream into memory
 - StreamState
-    - Improve API (instead of exposing IDictionary)
-    - Thread-safety
+    - Abstraction to prevent exposing IDictionary and allow thread-safe methods
+- Handle stack-overflow when a processor raises events back on to same stream

@@ -37,10 +37,10 @@
 
             DateAbstraction.Pause();
 
-            //  while (!System.Diagnostics.Debugger.IsAttached)
-            // {
-            //     System.Threading.Tasks.Task.Delay(100);
-            // }
+            // while (!System.Diagnostics.Debugger.IsAttached)
+            //{
+            //    System.Threading.Tasks.Task.Delay(100);
+            //}
         }
 
         [Fact]
@@ -74,7 +74,6 @@
             _eventList[1].SomeTestValue.ShouldBe("event 2");
             _eventList[2].SomeTestValue.ShouldBe("event 3");
         }
-
 
         [Fact]
         public async Task Throws_If_HandlerFactory_Returns_Type_That_Does_Not_Implement_Handler_Interface()
@@ -132,8 +131,60 @@
             await _easyEvents.RaiseEventAsync(new SimpleTextEvent("this should NOT explode"));
         }
 
+
         [Fact]
-        public async Task Adds_Processors_To_Event_Streams()
+        public async Task Handlers_Can_Raise_New_Events_During_Normal_Operation()
+        {
+            // Given
+            var store = new TestEventStore();
+            _easyEvents.Configure(new EasyEventsConfiguration
+            {
+                Store = store,
+                HandlerFactory = type =>
+                {
+                    if (type == typeof(IEventHandler<RaisesAnotherEvent>))
+                        return new RaisesAnotherEventHandler(_easyEvents);
+                    return new NullEventHandler();
+                }
+            });
+
+            // When
+            await _easyEvents.RaiseEventAsync(new RaisesAnotherEvent());
+
+            // Then
+            store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
+            store.Events[1].ShouldBeOfType<NullEvent>();
+        }
+
+        [Fact]
+        public async Task Handles_Do_Not_Raise_Events_Again_When_Events_Are_Being_Replayed()
+        {
+            // Given
+            var store = new TestEventStore();
+            _easyEvents.Configure(new EasyEventsConfiguration
+            {
+                Store = store,
+                HandlerFactory = type =>
+                {
+                    if (type == typeof(IEventHandler<RaisesAnotherEvent>))
+                        return new RaisesAnotherEventHandler(_easyEvents);
+                    return new NullEventHandler();
+                }
+            });
+            await _easyEvents.RaiseEventAsync(new RaisesAnotherEvent());
+
+            // When
+            _easyEvents.ReplayAllEventsAsync().Wait();
+
+            // Then
+            store.Events.Count.ShouldBe(2);
+            store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
+            store.Events[1].ShouldBeOfType<NullEvent>();
+        }
+
+
+        [Fact]
+        public async Task Runs_Processors_On_Event_Streams()
         {
             // Given
             _easyEvents.AddProcessorForStream("TestStream", async (s, e) =>
@@ -154,7 +205,7 @@
         }
 
         [Fact]
-        public async Task Does_Not_Run_Processors_On_Incorrect_Strean()
+        public async Task Does_Not_Run_Processors_On_Incorrect_Stream()
         {
             // Given
             _easyEvents.AddProcessorForStream("SomeOtherStream", async (s, e) =>
@@ -198,55 +249,55 @@
             _eventList[4].SomeTestValue.ShouldBe("Event 4");
         }
 
+
         [Fact]
-        public async Task Handlers_Raise_Events_During_Normal_Operation()
+        public async Task Runs_Processors_When_Replaying_Events()
         {
             // Given
-            var store = new TestEventStore();
-            _easyEvents.Configure(new EasyEventsConfiguration
+            var log = new List<string>();
+            _easyEvents.AddProcessorForStream("TestStream", (s, e) =>
             {
-                Store = store,
-                HandlerFactory = type =>
-                {
-                    if (type == typeof(IEventHandler<RaisesAnotherEvent>))
-                        return new RaisesAnotherEventHandler(_easyEvents);
-                    return new NullEventHandler();
-                }
+                log.Add("Processor Ran");
+                return Task.CompletedTask;
             });
 
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Event"));
+
             // When
-            await _easyEvents.RaiseEventAsync(new RaisesAnotherEvent());
+            await _easyEvents.ReplayAllEventsAsync();
 
             // Then
-            store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
-            store.Events[1].ShouldBeOfType<NullEvent>();
+            log.Count.ShouldBe(2);
         }
 
         [Fact]
-        public async Task Does_Not_Raise_Events_Again_When_Replaying_Events()
+        public async Task Processors_Do_Not_Raise_Events_Again_When_Replaying_Events()
         {
             // Given
             var store = new TestEventStore();
             _easyEvents.Configure(new EasyEventsConfiguration
             {
                 Store = store,
-                HandlerFactory = type =>
-                {
-                    if (type == typeof(IEventHandler<RaisesAnotherEvent>))
-                        return new RaisesAnotherEventHandler(_easyEvents);
-                    return new NullEventHandler();
-                }
+                HandlerFactory = type => new SimpleTextEventHandler(new List<SimpleTextEvent>())
             });
-            await _easyEvents.RaiseEventAsync(new RaisesAnotherEvent());
+
+            _easyEvents.AddProcessorForStream("TestStream", async (s, e) =>
+            {
+                // Processor that raises another event
+                await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Raised by processor", "AnotherStream"));
+            });
 
             // When
-            _easyEvents.ReplayAllEventsAsync().Wait();
+            await _easyEvents.RaiseEventAsync(new SimpleTextEvent("Raised by test"));
 
             // Then
+            await _easyEvents.ReplayAllEventsAsync();
+
             store.Events.Count.ShouldBe(2);
-            store.Events[0].ShouldBeOfType<RaisesAnotherEvent>();
-            store.Events[1].ShouldBeOfType<NullEvent>();
+            ((SimpleTextEvent)store.Events[0]).SomeTestValue.ShouldBe("Raised by test");
+            ((SimpleTextEvent)store.Events[1]).SomeTestValue.ShouldBe("Raised by processor");
         }
+
 
         [Fact]
         public async Task Populates_DateTime_Property_With_UTC_DateTime_If_Property_Exists()
@@ -266,6 +317,19 @@
         {
             // Given
             var testEvent = new HasDateTimePropertyWithIncorrectTypeEvent();
+
+            // When
+            await _easyEvents.RaiseEventAsync(testEvent);
+
+            // Then
+            testEvent.DateTime.ShouldBeNull();
+        }
+
+        [Fact]
+        public async Task Does_Not_Populate_DateTime_When_Property_Has_No_Setter()
+        {
+            // Given
+            var testEvent = new HasDateTimePropertyWithNoSetterEvent();
 
             // When
             await _easyEvents.RaiseEventAsync(testEvent);

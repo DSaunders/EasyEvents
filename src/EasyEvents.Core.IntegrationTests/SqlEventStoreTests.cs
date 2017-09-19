@@ -18,8 +18,8 @@
         public async Task Run_Test_In_Order()
         {
             // Ensures tests don't run in parallel, this is only for dev testing anyway
-            // await Raises_And_Replays_Single_Event();
-            // await Replays_All_Events_In_Order();
+            await Raises_And_Replays_Single_Event();
+            await Replays_All_Events_In_Order();
 
             // Requires an API not yet in .NET Core
             //await Subscribes_To_Events_From_Outside_Application();
