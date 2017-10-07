@@ -13,7 +13,7 @@
     {
         public bool IsReplayingEvents { get; private set; }
 
-        private static EasyEventsConfiguration _config;
+        private EasyEventsConfiguration _config;
 
         private readonly Processors _processors;
         private readonly StreamState _streamState;
