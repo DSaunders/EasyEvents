@@ -3,7 +3,6 @@
     using Core;
     using Core.ClientInterfaces;
     using Core.Configuration;
-    using Core.Stores;
     using Core.Stores.FileSystem;
     using Events.AppEvents;
     using Events.AppEvents.Handlers;

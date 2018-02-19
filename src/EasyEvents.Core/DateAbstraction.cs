@@ -1,6 +1,7 @@
 namespace EasyEvents.Core
 {
     using System;
+
     public static class DateAbstraction
     {
         private static DateTime? _pausedAt;
