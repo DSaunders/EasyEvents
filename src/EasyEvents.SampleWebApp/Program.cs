@@ -1,8 +1,8 @@
-﻿namespace EasyEvents.SampleWebApp
-{
-    using System.IO;
-    using Microsoft.AspNetCore.Hosting;
+﻿using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
+namespace EasyEvents.SampleWebApp
+{
     public class Program
     {
         public static void Main(string[] args)

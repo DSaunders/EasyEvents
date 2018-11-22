@@ -1,15 +1,15 @@
-﻿namespace EasyEvents.Core.IntegrationTests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Data.SqlClient;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Newtonsoft.Json;
-    using Shouldly;
-    using Stores.Sql;
-    using Xunit;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Stores.Sql;
+using Newtonsoft.Json;
+using Shouldly;
+using Xunit;
 
+namespace EasyEvents.Core.IntegrationTests
+{
     public class SqlEventStoreTests
     {
         private readonly string _conStr = "server=.;database=events.tests;Integrated Security=true;";

@@ -1,7 +1,7 @@
+using EasyEvents.Core.ClientInterfaces;
+
 namespace EasyEvents.Core.Tests.TestEvents
 {
-    using ClientInterfaces;
-
     public class SimpleTextEvent : IEvent
     {
         public string Stream { get; set; }

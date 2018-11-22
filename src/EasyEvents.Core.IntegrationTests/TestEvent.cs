@@ -1,7 +1,7 @@
-﻿namespace EasyEvents.Core.IntegrationTests
-{
-    using ClientInterfaces;
+﻿using EasyEvents.Core.ClientInterfaces;
 
+namespace EasyEvents.Core.IntegrationTests
+{
     public class TestEvent : IEvent
     {
         public string Stream => "test-stream";

@@ -1,11 +1,11 @@
-﻿namespace EasyEvents.Core.Stores.Sql
-{
-    using System;
-    using System.Data.SqlClient;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Newtonsoft.Json;
+﻿using System;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using Newtonsoft.Json;
 
+namespace EasyEvents.Core.Stores.Sql
+{
     public class SqlServerEventStore : IStore
     {
         private readonly string _connectionString;

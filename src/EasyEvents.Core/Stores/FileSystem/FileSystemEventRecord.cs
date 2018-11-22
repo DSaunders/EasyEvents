@@ -1,7 +1,7 @@
-﻿namespace EasyEvents.Core.Stores.FileSystem
-{
-    using System;
+﻿using System;
 
+namespace EasyEvents.Core.Stores.FileSystem
+{
     internal class FileSystemEventRecord
     {
         public string EventName { get; }

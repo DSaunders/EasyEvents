@@ -1,11 +1,11 @@
-﻿namespace EasyEvents.Core.Stores.FileSystem
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
+namespace EasyEvents.Core.Stores.FileSystem
+{
     internal class EventStreams : IDisposable
     {
         private class EventStreamCollectionItem

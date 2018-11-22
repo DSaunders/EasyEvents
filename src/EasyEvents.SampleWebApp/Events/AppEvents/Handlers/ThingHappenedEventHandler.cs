@@ -1,8 +1,8 @@
-﻿namespace EasyEvents.SampleWebApp.Events.AppEvents.Handlers
-{
-    using System.Threading.Tasks;
-    using Core.ClientInterfaces;
+﻿using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
 
+namespace EasyEvents.SampleWebApp.Events.AppEvents.Handlers
+{
     internal class ThingHappenedEventHandler : IEventHandler<ThingHappenedEvent>
     {
         public Task HandleEventAsync(ThingHappenedEvent @event)

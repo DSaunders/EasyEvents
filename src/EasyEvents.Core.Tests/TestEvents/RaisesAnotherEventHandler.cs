@@ -1,8 +1,8 @@
-﻿namespace EasyEvents.Core.Tests.TestEvents
-{
-    using System.Threading.Tasks;
-    using ClientInterfaces;
+﻿using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
 
+namespace EasyEvents.Core.Tests.TestEvents
+{
     public class RaisesAnotherEventHandler : IEventHandler<RaisesAnotherEvent>
     {
         private readonly IEasyEvents _easyEvents;

@@ -1,7 +1,7 @@
-﻿namespace EasyEvents.Core.ClientInterfaces
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace EasyEvents.Core.ClientInterfaces
+{
     public interface IEvent
     {
         [JsonIgnore]

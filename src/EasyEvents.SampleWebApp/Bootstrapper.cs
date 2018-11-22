@@ -1,21 +1,21 @@
-﻿namespace EasyEvents.SampleWebApp
-{
-    using Core;
-    using Core.ClientInterfaces;
-    using Core.Configuration;
-    using Core.Stores.FileSystem;
-    using Events.AppEvents;
-    using Events.AppEvents.Handlers;
-    using Events.TestEvents;
-    using Nancy;
-    using Nancy.Bootstrapper;
-    using Nancy.TinyIoc;
+﻿using EasyEvents.Core;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Configuration;
+using EasyEvents.Core.Stores.FileSystem;
+using EasyEvents.SampleWebApp.Events.AppEvents;
+using EasyEvents.SampleWebApp.Events.AppEvents.Handlers;
+using EasyEvents.SampleWebApp.Events.TestEvents;
+using Nancy;
+using Nancy.Bootstrapper;
+using Nancy.TinyIoc;
 
+namespace EasyEvents.SampleWebApp
+{
     public class Bootstrapper : DefaultNancyBootstrapper
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            container.Register<IEasyEvents, EasyEvents>().AsSingleton();
+            container.Register<IEasyEvents, Core.EasyEvents>().AsSingleton();
             container.Register<IEventHandler<AppStartedEvent>, AppStartedEventHandler>();
             container.Register<IEventHandler<ThingHappenedEvent>, ThingHappenedEventHandler>();
             container.Register<IEventHandler<PageViewedEvent>, PageViewedEventHandler>();

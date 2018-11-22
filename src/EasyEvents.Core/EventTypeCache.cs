@@ -1,12 +1,12 @@
-﻿namespace EasyEvents.Core
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using ClientInterfaces;
-    using Microsoft.Extensions.DependencyModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using EasyEvents.Core.ClientInterfaces;
+using Microsoft.Extensions.DependencyModel;
 
+namespace EasyEvents.Core
+{
     public class EventTypeCache
     {
         private readonly Dictionary<string, Type> _typeCache = new Dictionary<string, Type>();

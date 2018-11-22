@@ -1,14 +1,13 @@
-﻿using EasyEvents.Core.Stores.Postgres;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Stores.Postgres;
 using Npgsql;
+using Shouldly;
+using Xunit;
 
 namespace EasyEvents.Core.IntegrationTests
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Shouldly;
-    using Xunit;
-
     public class PostgresqlStoreTests
     {
         private readonly string _conStr =

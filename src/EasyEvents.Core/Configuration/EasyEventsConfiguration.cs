@@ -1,9 +1,9 @@
-﻿namespace EasyEvents.Core.Configuration
-{
-    using System;
-    using Stores;
-    using Stores.InMemory;
+﻿using System;
+using EasyEvents.Core.Stores;
+using EasyEvents.Core.Stores.InMemory;
 
+namespace EasyEvents.Core.Configuration
+{
     public class EasyEventsConfiguration
     {
         public IStore Store { get; set; }

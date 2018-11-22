@@ -1,7 +1,7 @@
-﻿namespace EasyEvents.Core
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace EasyEvents.Core
+{
     public class StreamState
     {
         private readonly Dictionary<string, Dictionary<string, object>> _streamState;

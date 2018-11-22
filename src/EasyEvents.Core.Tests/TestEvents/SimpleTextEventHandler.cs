@@ -1,9 +1,9 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+
 namespace EasyEvents.Core.Tests.TestEvents
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-
     public class SimpleTextEventHandler : IEventHandler<SimpleTextEvent>
     {
         private readonly IList<SimpleTextEvent> _eventList;

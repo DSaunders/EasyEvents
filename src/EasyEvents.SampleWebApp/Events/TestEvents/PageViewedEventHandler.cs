@@ -1,8 +1,8 @@
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+
 namespace EasyEvents.SampleWebApp.Events.TestEvents
 {
-    using System.Threading.Tasks;
-    using Core.ClientInterfaces;
-
     internal class PageViewedEventHandler : IEventHandler<PageViewedEvent>
     {
         public Task HandleEventAsync(PageViewedEvent @event)

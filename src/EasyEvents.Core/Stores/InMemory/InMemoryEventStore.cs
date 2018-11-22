@@ -1,10 +1,10 @@
-﻿namespace EasyEvents.Core.Stores.InMemory
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
 
+namespace EasyEvents.Core.Stores.InMemory
+{
     public class InMemoryEventStore : IStore
     {
         private readonly List<IEvent> _events;

@@ -1,12 +1,12 @@
-﻿namespace EasyEvents.SampleWebApp
-{
-    using System.Text;
-    using System.Threading.Tasks;
-    using Core;
-    using Events.AppEvents;
-    using Events.TestEvents;
-    using Nancy;
+﻿using System.Text;
+using System.Threading.Tasks;
+using EasyEvents.Core;
+using EasyEvents.SampleWebApp.Events.AppEvents;
+using EasyEvents.SampleWebApp.Events.TestEvents;
+using Nancy;
 
+namespace EasyEvents.SampleWebApp
+{
     public class SampleModule : NancyModule
     {
         public SampleModule(IEasyEvents easyEvents)

@@ -1,14 +1,14 @@
-﻿namespace EasyEvents.Core
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Configuration;
-    using Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Configuration;
+using EasyEvents.Core.Exceptions;
 
+namespace EasyEvents.Core
+{
     public class EasyEvents : IEasyEvents
     {
         public bool IsReplayingEvents { get; private set; }

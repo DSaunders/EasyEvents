@@ -1,15 +1,15 @@
-﻿namespace EasyEvents.Core.Tests
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Configuration;
-    using Exceptions;
-    using Shouldly;
-    using Stores.InMemory;
-    using TestEvents;
-    using Xunit;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Configuration;
+using EasyEvents.Core.Exceptions;
+using EasyEvents.Core.Stores.InMemory;
+using EasyEvents.Core.Tests.TestEvents;
+using Shouldly;
+using Xunit;
 
+namespace EasyEvents.Core.Tests
+{
     public class EventPublishingTests
     {
         private readonly SimpleTextEventHandler _simpleTextEventHandler;

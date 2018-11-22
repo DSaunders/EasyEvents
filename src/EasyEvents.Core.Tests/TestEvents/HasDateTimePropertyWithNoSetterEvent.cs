@@ -1,8 +1,8 @@
+using System;
+using EasyEvents.Core.ClientInterfaces;
+
 namespace EasyEvents.Core.Tests.TestEvents
 {
-    using System;
-    using ClientInterfaces;
-
     public class HasDateTimePropertyWithNoSetterEvent : IEvent
     {
         public string Stream => "TestStream";

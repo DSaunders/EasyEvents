@@ -1,12 +1,12 @@
-﻿namespace EasyEvents.Core.Stores.FileSystem
-{
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Newtonsoft.Json;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using Newtonsoft.Json;
 
+namespace EasyEvents.Core.Stores.FileSystem
+{
     public class FileSystemEventStore : IStore
     {
         private readonly EventTypeCache _typeCache;

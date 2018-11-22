@@ -1,13 +1,13 @@
-﻿namespace EasyEvents.Core.IntegrationTests
-{
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Shouldly;
-    using Stores.FileSystem;
-    using Xunit;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Stores.FileSystem;
+using Shouldly;
+using Xunit;
 
+namespace EasyEvents.Core.IntegrationTests
+{
     public class FileSystemEventStoreTests
     {
         private const string EventPath = "/integration-test-events";

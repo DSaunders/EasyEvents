@@ -1,9 +1,9 @@
-﻿namespace EasyEvents.Core
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace EasyEvents.Core
+{
     public class Processors
     {
         private readonly Dictionary<string, IList<Func<Dictionary<string, object>, object, Task>>> _processors;

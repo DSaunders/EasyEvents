@@ -1,11 +1,11 @@
-﻿namespace EasyEvents.Core
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Configuration;
 
+namespace EasyEvents.Core
+{
     public interface IEasyEvents
     {
         void Configure(EasyEventsConfiguration config);

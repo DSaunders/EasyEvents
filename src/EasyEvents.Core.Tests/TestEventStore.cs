@@ -1,11 +1,11 @@
-﻿namespace EasyEvents.Core.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using ClientInterfaces;
-    using Stores;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using EasyEvents.Core.ClientInterfaces;
+using EasyEvents.Core.Stores;
 
+namespace EasyEvents.Core.Tests
+{
     public class TestEventStore : IStore
     {
         public readonly List<IEvent> Events;
