@@ -80,7 +80,7 @@ namespace EasyEvents.Core.Stores.Postgres
                                   "streamName text, " +
                                   "eventName text, " +
                                   "payload text, " +
-                                  "created date" +
+                                  "created timestamp" +
                                   ");";
 
                 await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
