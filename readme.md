@@ -5,12 +5,10 @@
 - .NET Core
 - Strongly typed events and handlers
 - Async everywhere
-- Event persistence handled for you. SqlServer, file system or in-memory - with more to come (including EventStore)
+- Event persistence handled for you. EasyEvents stores events in SqlServer, Postgresql, the file system or in-memory (with more to come)
 
 Raise events, then create handlers that respond to the events and modify application state in memory. 
-When your application re-starts, replay all of the events to restore your state with one line of code.
-
-Add processors that run for every event on a stream (to project into reporting, raise new events or just for logging).
+When your application re-starts, replay all of the events to restore your in-memory application state with one line of code.
 
 **EasyEvents makes is easy to persist events - not state.**  
   
@@ -48,4 +46,4 @@ await easyEvents.RaiseEventAsync(new UserCreated("Jane"));
 
 See the [Getting Started](https://github.com/DSaunders/EasyEvents/wiki/Getting-Started) to find out more about what **EasyEvents** can do.
 
-This is still a work in progress. It is used in production for a small site - but maybe don't use it to build your international banking software just yet.
+This is still a work in progress. It is used in production for a small site - but maybe don't use it to build your international banking software just yet. :wink:
