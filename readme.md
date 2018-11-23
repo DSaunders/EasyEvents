@@ -5,7 +5,7 @@
 - .NET Core
 - Strongly typed events and handlers
 - Async everywhere
-- Event persistence handled for you. SqlServer, Postgresql, the file system or in-memory - with more to come (including EventStore)
+- Event persistence handled for you. EasyEvents stores events in SqlServer, Postgresql, the file system or in-memory (with more to come)
 
 Raise events, then create handlers that respond to the events and modify application state in memory. 
 When your application re-starts, replay all of the events to restore your state with one line of code.
