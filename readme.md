@@ -8,9 +8,7 @@
 - Event persistence handled for you. EasyEvents stores events in SqlServer, Postgresql, the file system or in-memory (with more to come)
 
 Raise events, then create handlers that respond to the events and modify application state in memory. 
-When your application re-starts, replay all of the events to restore your state with one line of code.
-
-Add processors that run for every event on a stream (to project into reporting, raise new events or just for logging).
+When your application re-starts, replay all of the events to restore your in-memory application state with one line of code.
 
 **EasyEvents makes is easy to persist events - not state.**  
   
