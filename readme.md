@@ -45,5 +45,3 @@ await easyEvents.RaiseEventAsync(new UserCreated("Jane"));
 ```
 
 See the [Getting Started](https://github.com/DSaunders/EasyEvents/wiki/Getting-Started) to find out more about what **EasyEvents** can do.
-
-This is still a work in progress. It is used in production for a small site - but maybe don't use it to build your international banking software just yet. :wink:
