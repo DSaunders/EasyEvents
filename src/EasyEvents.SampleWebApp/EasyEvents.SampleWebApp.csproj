@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.0.0" />
-    <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyEvents.Core\EasyEvents.Core.csproj" />
